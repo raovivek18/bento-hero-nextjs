@@ -21,28 +21,21 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function BentoHero() {
     const [activeStyle, setActiveStyle] = useState("DIGITAL");
     const [prompt, setPrompt] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
     const [activeNav, setActiveNav] = useState("home");
     const [isGenerating, setIsGenerating] = useState(false);
     const [downloaded, setDownloaded] = useState(false);
 
-    const screenshots = [
-        "/images/Screenshot 2026-02-10 160738.png",
-        "/images/Screenshot 2026-02-10 160755.png",
-        "/images/Screenshot 2026-02-10 160802.png",
-        "/images/Screenshot 2026-02-10 160810.png",
-        "/images/Screenshot 2026-02-10 160818.png",
-        "/images/Screenshot 2026-02-10 160825.png"
-    ];
+    const heroImageSrc = "/images/ai-hero.png";
+    const avatarImage = "/images/user-avatar.png";
+    const inspireMain = "/images/ai-inspired.png";
 
-    const [heroImage, setHeroImage] = useState(screenshots[5]);
+    const [heroImage, setHeroImage] = useState(heroImageSrc);
     const [imageStack, setImageStack] = useState([
-        { id: 1, src: screenshots[0], label: "01" },
-        { id: 2, src: screenshots[1], label: "02" },
-        { id: 3, src: screenshots[3], label: "03" }
+        { id: 1, src: "/images/ai-alt-1.png", label: "01" },
+        { id: 2, src: "/images/ai-alt-2.png", label: "02" },
+        { id: 3, src: "/images/ai-alt-3.png", label: "03" }
     ]);
-
-    const avatarImage = screenshots[2];
-    const inspireMain = screenshots[4];
 
     const styles = [
         "MYTHOLOGICAL", "ANIME", "FANTASY",
@@ -91,10 +84,8 @@ export default function BentoHero() {
                 className="w-full h-full bg-[#0a0a0a] rounded-[60px] p-6 flex gap-6 border border-white/5 shadow-2xl overflow-hidden"
             >
 
-                {/* PANEL 1: LEFT SIDEBAR (Profile, Nav, Inspo) */}
                 <div className="w-[320px] h-full flex flex-col gap-6">
 
-                    {/* PROFILE & NAV SECTION */}
                     <div className="flex-1 bg-white rounded-[50px] p-8 flex flex-col items-center justify-between">
                         <div className="flex flex-col items-center gap-6 w-full">
                             <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -135,7 +126,6 @@ export default function BentoHero() {
                         </div>
                     </div>
 
-                    {/* GET INSPIRED WIDGET (Moved to Sidebar Bottom) */}
                     <div className="h-[200px] bg-[#f4f4f6] rounded-[50px] p-6 relative overflow-hidden group">
                         <h3 className="text-black/40 font-bold text-[10px] tracking-widest uppercase mb-4">Get Inspired</h3>
                         <div className="flex items-center gap-4 relative z-10">
@@ -151,7 +141,6 @@ export default function BentoHero() {
 
                 </div>
 
-                {/* PANEL 2: CENTER HERO (Massive) */}
                 <div className="flex-1 h-full relative">
                     <div className="w-full h-full bg-zinc-900 rounded-[60px] overflow-hidden border border-white/10 relative group">
                         <AnimatePresence mode="wait">
@@ -168,13 +157,12 @@ export default function BentoHero() {
 
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-                        {/* Float Widgets on Hero */}
                         <div className="absolute top-8 right-8 flex gap-4">
                             <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                onClick={() => setDownloaded(true)}
                                 className={`p-4 rounded-full shadow-2xl transition-all duration-300 ${downloaded ? 'bg-green-500 text-white' : 'bg-white/10 backdrop-blur-xl text-white border border-white/20'}`}
+                                onClick={() => { setDownloaded(true); setTimeout(() => setDownloaded(false), 2000); }}
                             >
                                 {downloaded ? <CheckCircle2 size={24} /> : <Download size={24} />}
                             </motion.button>
@@ -206,20 +194,19 @@ export default function BentoHero() {
                     </div>
                 </div>
 
-                {/* PANEL 3: RIGHT UTILITIES (Search, Styles, Stack) */}
                 <div className="w-[360px] h-full flex flex-col gap-6">
 
-                    {/* SEARCH WIDGET (Top Right) */}
                     <div className="bg-white rounded-[40px] h-[84px] flex items-center px-8 gap-4 shadow-xl">
                         <Search className="text-black/30" size={26} />
                         <input
                             type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search..."
                             className="bg-transparent outline-none w-full text-black font-bold text-lg placeholder:text-black/30"
                         />
                     </div>
 
-                    {/* STYLE SELECTOR (Middle Right) */}
                     <div className="bg-white rounded-[50px] p-8 flex-1 flex flex-col justify-between shadow-xl">
                         <div className="space-y-6">
                             <h3 className="text-black/40 font-bold text-xs tracking-widest uppercase">Choose Style</h3>
@@ -250,7 +237,6 @@ export default function BentoHero() {
                         </div>
                     </div>
 
-                    {/* IMAGE STACK (Bottom Right) */}
                     <div className="h-[240px] relative mt-4 group/stack">
                         <div className="absolute inset-0 flex items-center justify-center">
                             {imageStack.map((item, idx) => (
